@@ -20,26 +20,51 @@ import io.zatarox.squiggle.output.Output;
 public class Column extends Projection implements Matchable {
 
     private final String name;
+    private final String alias;
 
     public Column(Table table, String name) {
+        this(table, name, null);
+    }
+
+	public Column(Table table, String name, String alias) {
         super(table);
         this.name = name;
+        this.alias = alias;
     }
 
     public String getName() {
         return name;
     }
 
+    /**
+     * Whether this column has an alias assigned.
+     */
+    protected boolean hasAlias() {
+        return alias != null;
+    }
+
+    /**
+     * Short alias of column
+     */
+	public String getAlias() {
+		return alias != null ? alias : name;
+	}
+
     @Override
     public void write(Output out) {
         out.print(getTable().getAlias()).print('.').print(getName());
+
+        if (hasAlias()) {
+            out.print(" as ");
+            out.print(getAlias());
+        }
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = getTable().hashCode();
-        result = prime * result + name.hashCode();
+        result = prime * result + getAlias().hashCode();
         return result;
     }
 
@@ -57,7 +82,7 @@ public class Column extends Projection implements Matchable {
 
         final Column that = (Column) o;
 
-        return this.name.equals(that.name)
+        return this.getAlias().equals(that.getAlias())
                 && this.getTable().equals(that.getTable());
     }
 }

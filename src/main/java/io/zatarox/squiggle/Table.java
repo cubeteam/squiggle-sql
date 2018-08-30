@@ -60,6 +60,13 @@ public class Table implements Outputable {
         return new Column(this, columnName);
     }
 
+    /**
+     * Get a column for a particular table with alias.
+     */
+    public Column getColumn(String columnName, String columnAlias) {
+        return new Column(this, columnName, columnAlias);
+    }
+
     public WildCardColumn getWildcard() {
         return new WildCardColumn(this);
     }

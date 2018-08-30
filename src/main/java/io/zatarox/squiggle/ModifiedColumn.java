@@ -48,11 +48,14 @@ public class ModifiedColumn extends Column {
 
     @Override
     public void write(Output out) {
-        out.print(getOperator().getSqlName() + "(")
-                .print(getTable().getAlias())
-                .print('.')
-                .print(getName())
-                .print(")");
+        out.print(getOperator().getSqlName() + "(");
+        out.print(getTable().getAlias()).print('.').print(getName());
+        out.print(")");
+
+        if (hasAlias()) {
+            out.print(" as ");
+            out.print(getAlias());
+        }
     }
 
     @Override

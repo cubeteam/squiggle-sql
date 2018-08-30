@@ -55,8 +55,12 @@ public class SelectQuery implements Outputable, ValueSet {
     /**
      * Syntax sugar for addToSelection(Column).
      */
-    public void addColumn(Table table, String columname) {
-        addToSelection(table.getColumn(columname));
+    public void addColumn(Table table, String columName) {
+        addToSelection(table.getColumn(columName));
+    }
+
+    public void addColumn(Table table, String columName, String columnAlias) {
+        addToSelection(table.getColumn(columName, columnAlias));
     }
 
     public void removeFromSelection(Selectable selectable) {
