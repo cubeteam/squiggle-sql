@@ -39,13 +39,16 @@ public class SelectQuery implements Outputable, ValueSet {
     private boolean isDistinct = false;
     private boolean isAllColumns = false;
 
+    private int offset = 0;
+	private int limit = 0;
+
     public List<Table> listTables() {
         LinkedHashSet<Table> tables = new LinkedHashSet<Table>();
         addReferencedTablesTo(tables);
         return new ArrayList<Table>(tables);
     }
 
-    public void addToSelection(Selectable selectable) {
+	public void addToSelection(Selectable selectable) {
         selection.add(selectable);
     }
 
@@ -82,6 +85,22 @@ public class SelectQuery implements Outputable, ValueSet {
     public void setAllColumns(boolean allColumns) {
         isAllColumns = allColumns;
     }
+
+	public int getOffset() {
+		return offset;
+	}
+
+	public void setOffset(int offset) {
+		this.offset = offset;
+	}
+
+	public int getLimit() {
+		return limit;
+	}
+
+	public void setLimit(int limit) {
+		this.limit = limit;
+	}
 
     public void addCriteria(Criteria criteria) {
         this.criteria.add(criteria);
@@ -164,6 +183,30 @@ public class SelectQuery implements Outputable, ValueSet {
             out.println("ORDER BY");
             appendIndentedList(out, order, ",");
         }
+
+        // Add offset
+		if (offset > 0) {
+            out.println("OFFSET ").print(offset).print(" ");
+            if (offset == 1) {
+                out.print("ROW");
+            } else {
+                out.print("ROWS");
+            }
+            out.print(" ");
+            out.println();
+		}
+
+        // Add limit
+        if (limit > 0) {
+            out.println("FETCH NEXT ").print(limit).print(" ");
+            if (limit == 1) {
+                out.print("ROW");
+            } else {
+                out.print("ROWS");
+            }
+            out.print(" ONLY");
+            out.println();
+		}
     }
 
     private void appendIndentedList(Output out, Collection<? extends Outputable> things, String seperator) {
