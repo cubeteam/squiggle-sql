@@ -190,26 +190,14 @@ public class SelectQuery implements Outputable, ValueSet {
 
         // Add offset
 		if (offset > 0) {
-            out.println("OFFSET ").print(offset).print(" ");
-            if (offset == 1) {
-                out.print("ROW");
-            } else {
-                out.print("ROWS");
-            }
-            out.print(" ");
-            out.println();
+            String label = (offset == 1 ? "ROW" : "ROWS");
+            out.println(String.format("OFFSET %d %s", offset, label));
 		}
 
         // Add limit
         if (limit > 0) {
-            out.println("FETCH NEXT ").print(limit).print(" ");
-            if (limit == 1) {
-                out.print("ROW");
-            } else {
-                out.print("ROWS");
-            }
-            out.print(" ONLY");
-            out.println();
+            String label = (limit == 1 ? "ROW" : "ROWS");
+            out.println(String.format("FETCH NEXT %d %s ONLY", limit, label));
 		}
     }
 
