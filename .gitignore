@@ -2,3 +2,7 @@ target
 docs
 nb-configuration.xml
 /nbactions.xml
+.settings
+.classpath
+.project
+.vscode
